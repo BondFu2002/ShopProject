@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -38,19 +39,22 @@ export class ProductController {
 
   @Get(':id')
   @ApiOkResponse({ type: ProductEntity })
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.productService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: ProductEntity })
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    return this.productService.update(id, updateProductDto);
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: ProductEntity })
-  remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.productService.remove(id);
   }
 }
