@@ -13,24 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//商品模型
-// id: 商品的唯一标识符，自动递增。
-// name: 商品名称，唯一。
-// description: 商品描述，可选。
-// price: 商品价格。
-// stock: 商品库存数量，默认为0。
-// category: 商品类别，可选。
-// createdAt: 商品创建时间，默认为当前时间。
-// updatedAt: 商品更新时间，自动更新为当前时间。
-// imageUrl: 商品图片的URL，可选。
-// published: 商品是否已发布，默认为false。
+
 model Product {
   id          Int      @id @default(autoincrement())
   name        String   @unique
   description String?
   price       Float
   stock       Int      @default(0)
-  category    String?
+  //category    String?
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -39,6 +29,15 @@ model Product {
   CreatedBy   User?    @relation("ProductToCreatedByUser", fields: [CId], references: [id]) // 记录创建该商品的用户
   MId         Int? // 记录上一次修改该商品的管理员ID
   CId         Int? // 记录创建该商品的管理员ID
+  categoryId  Int      @default(1)// 外键，关联到 Category 模型的 id
+  category    Category @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  products    Product[]
 }
 
 model User {

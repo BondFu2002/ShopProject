@@ -1,6 +1,7 @@
 import { Product } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { CategoryEntity } from 'src/category/entities/category.entity';
 
 export class ProductEntity implements Product {
   @ApiProperty()
@@ -19,7 +20,10 @@ export class ProductEntity implements Product {
   stock: number;
 
   @ApiProperty({ required: false, nullable: true })
-  category: string | null;
+  categoryId: number | null;
+
+  @ApiProperty({ required: false, type: CategoryEntity })
+  category?: CategoryEntity;
 
   @ApiProperty()
   published: boolean;

@@ -33,11 +33,11 @@ export class CreateProductDto {
   @ApiProperty()
   stock: number;
 
-  @IsString()
-  @IsOptional()
-  @IsNotEmpty()
-  @ApiProperty({ required: false })
-  category?: string;
+  // @IsString()
+  // @IsOptional()
+  // @IsNotEmpty()
+  // @ApiProperty({ required: false })
+  // category?: string;
 
   @IsString()
   @ApiProperty()
