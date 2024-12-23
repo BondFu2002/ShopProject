@@ -21,7 +21,7 @@ export class CreateProductDto {
   @IsNotEmpty()
   @MaxLength(300)
   @ApiProperty({ required: false })
-  description: string;
+  description?: string;
 
   @IsNumber()
   @IsNotEmpty()
@@ -34,9 +34,10 @@ export class CreateProductDto {
   stock: number;
 
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
   @ApiProperty({ required: false })
-  category: string;
+  category?: string;
 
   @IsString()
   @ApiProperty()
