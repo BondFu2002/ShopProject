@@ -1,36 +1,53 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import CategoryManagement from "../pages/CategoryManagement";
-import ProductManagement from "../pages/ProductManagement";
+import CategoryList from "../pages/CategoryList";
+import ProductList from "../pages/ProductList";
 import ProductDetail from "../pages/ProductDetail";
 import ProductForm from "../pages/ProductForm";
+import Layout from "../pages/Layout";
+import Home from "../pages/Home";
 
-const router = [
+const router = createBrowserRouter([
   {
     path: "/login",
-    Component: Login,
+    element: <Login />,
   },
   {
     path: "/register",
-    Component: Register,
+    element: <Register />,
   },
   {
-    path: "/category-management",
-    Component: CategoryManagement,
-  },
-  {
-    path: "/product-management",
-    Component: ProductManagement,
-  },
-  {
-    path: "/product-detail/:id",
-    Component: ProductDetail,
-  },
-  {
-    path: "/product-form",
-    Component: ProductForm,
-  },
-];
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/product-list",
+        element: <ProductList />,
+      },
+      {
+        path: "/category-list",
+        element: <CategoryList />,
+      },
 
-export default createBrowserRouter(router);
+      {
+        path: "/product-detail/:id",
+        element: <ProductDetail />,
+      },
+      {
+        path: "/product-form/edit/:id",
+        element: <ProductForm />,
+      },
+      {
+        path: "/product-form/create",
+        element: <ProductForm />,
+      },
+    ],
+  },
+]);
+
+export default router;

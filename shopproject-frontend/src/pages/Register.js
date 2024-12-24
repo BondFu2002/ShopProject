@@ -1,4 +1,3 @@
-// src/pages/Register.js
 import React from 'react';
 import { Form, Input, Button, Checkbox, Space, Typography } from 'antd';
 import { useFormik } from 'formik';

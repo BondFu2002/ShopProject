@@ -1,0 +1,23 @@
+.ant-layout-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .ant-layout-content {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .ant-typography {
+    color: #001529; /* 设置文本颜色为深蓝色 */
+  }
+  
+  .ant-typography-title {
+    margin-bottom: 16px;
+  }
+  
+  .ant-typography-paragraph {
+    margin-bottom: 24px;
+  }
+  

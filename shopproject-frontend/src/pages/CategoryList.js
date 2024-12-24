@@ -1,22 +1,17 @@
 import React from 'react';
 import { Table, Button } from 'antd';
 
-const ProductManagement = () => {
+const CategoryList = () => {
     const columns = [
         {
-            title: '商品名称',
+            title: '分类名称',
             dataIndex: 'name',
-        },
-        {
-            title: '价格',
-            dataIndex: 'price',
         },
         {
             title: '操作',
             dataIndex: 'operation',
             render: (text, record) => (
                 <span>
-                    <Button type="link">详情</Button>
                     <Button type="link">编辑</Button>
                 </span>
             ),
@@ -26,11 +21,11 @@ const ProductManagement = () => {
     return (
         <div>
             <Button type="primary" style={{ marginBottom: 16 }}>
-                创建商品
+                创建分类
             </Button>
             <Table columns={columns} dataSource={[]} />
         </div>
     );
 };
 
-export default ProductManagement;
+export default CategoryList;
