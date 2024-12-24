@@ -7,7 +7,7 @@ import ProductDetail from "../pages/ProductDetail";
 import ProductForm from "../pages/ProductForm";
 import Layout from "../pages/Layout";
 import Home from "../pages/Home";
-
+import UnpublishedProducts from "../pages/ProductDrafts"
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -45,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/product-form/create",
         element: <ProductForm />,
+      },
+      {
+        path: "/product-drafts",
+        element: <UnpublishedProducts />,
       },
     ],
   },

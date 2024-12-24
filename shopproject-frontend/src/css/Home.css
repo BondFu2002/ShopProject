@@ -1,23 +1,39 @@
-.ant-layout-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .ant-layout-content {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .ant-typography {
-    color: #001529; /* 设置文本颜色为深蓝色 */
-  }
-  
-  .ant-typography-title {
-    margin-bottom: 16px;
-  }
-  
-  .ant-typography-paragraph {
-    margin-bottom: 24px;
-  }
-  
+
+.home-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: #fdfdfe;
+}
+
+.home-content {
+  flex: 1;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fcfcfd;
+}
+
+.home-card {
+  background: #fff;
+  padding: 48px;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home-section-title {
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.home-paragraph {
+  font-size: 22px;
+}
+
+

@@ -39,10 +39,6 @@ export class CreateProductDto {
   // @ApiProperty({ required: false })
   // category?: string;
 
-  @IsString()
-  @ApiProperty()
-  imageUrl: string;
-
   @IsBoolean()
   @IsOptional()
   @ApiProperty({ required: false, default: false })

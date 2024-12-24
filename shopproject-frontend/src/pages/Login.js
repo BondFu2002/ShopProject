@@ -29,8 +29,16 @@ const Login = () => {
     onSubmit: async (values) => { // 定义表单提交时的处理逻辑
       try {
         const response = await axios.post('/auth/login', values); // 发送 POST 请求到 /auth/login 接口，请求体包含表单数据
-        console.log(response.data); // 打印响应数据到控制台
+        const accessToken = response.data.accessToken; // 获取返回的 accessToken
+        const userName = response.data.userName; // 获取返回的用户名
+        // 存储 accessToken 到 localStorage
+        localStorage.setItem('jwtToken', accessToken);
+        localStorage.setItem('userName', userName);
+
         openNotificationWithIcon('success', '登录成功', '欢迎回来！'); // 调用自定义的通知函数，显示登录成功的通知
+
+        // 导航到主页
+        navigate('/');
       } catch (error) {
         console.error(error); // 打印错误信息到控制台
         openNotificationWithIcon('error', '登录失败', '请检查输入的信息并重试。'); // 调用自定义的通知函数，显示登录失败的通知

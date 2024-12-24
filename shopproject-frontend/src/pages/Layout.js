@@ -1,4 +1,4 @@
-import { Outlet , useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Layout, Menu, Popconfirm } from "antd";
 import {
   LogoutOutlined,
@@ -8,15 +8,14 @@ import {
 } from "@ant-design/icons";
 import "../css/Layout.css";
 
-
 const { Header, Sider } = Layout;
 
 const items = [
-    {
-        label: "首页",
-        key: "",
-        icon: <HomeOutlined />,
-    },
+  {
+    label: "首页",
+    key: "",
+    icon: <HomeOutlined />,
+  },
   {
     label: "商品管理",
     key: "product-list",
@@ -27,6 +26,11 @@ const items = [
     key: "category-list",
     icon: <TableOutlined />,
   },
+  {
+    label: "还未发布",
+    key: "product-drafts",
+    icon: <ShoppingOutlined />,
+  },
 ];
 
 const ShopLayout = () => {
@@ -34,14 +38,26 @@ const ShopLayout = () => {
   const menuClick = (route) => {
     navigate(route.key);
   };
+  const location = useLocation();
+  const selectedKey = location.pathname;
+
+  // 定义退出操作
+  const handleLogout = () => {
+    // 清除 JWT 令牌
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userName');
+    // 导航到登录页面
+    navigate('/login');
+  };
+
   return (
     <Layout>
       <Header className="header">
         <div className="logo" />
         <div className="user-info">
-          <span className="user-name">BOND</span>
+          <span className="user-name">Hi! {localStorage.getItem('userName')}</span>
           <span className="user-logout">
-            <Popconfirm title="是否确认退出？" okText="退出" cancelText="取消">
+            <Popconfirm title="是否确认退出？" okText="退出" cancelText="取消" onConfirm={handleLogout}>
               <LogoutOutlined /> 退出
             </Popconfirm>
           </span>
@@ -52,7 +68,7 @@ const ShopLayout = () => {
           <Menu
             mode="inline"
             theme="dark"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={[selectedKey]}
             items={items}
             style={{ height: "100%", borderRight: 0 }}
             onClick={menuClick}
