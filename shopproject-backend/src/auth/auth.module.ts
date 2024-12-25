@@ -6,6 +6,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { UsersModule } from 'src/users/users.module';
 import { JwtStrategy } from './jwt.strategy';
+import { CategoryModule } from 'src/category/category.module';
+import { ProductModule } from 'src/product/product.module';
 
 export const jwtSecret = process.env.JWT_SECRET;
 
@@ -18,6 +20,8 @@ export const jwtSecret = process.env.JWT_SECRET;
       signOptions: { expiresIn: '5m' }, // e.g. 30s, 7d, 24h
     }),
     UsersModule,
+    CategoryModule,
+    ProductModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
