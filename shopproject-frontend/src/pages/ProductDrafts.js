@@ -1,62 +1,86 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button } from "antd";
+import { Table, Button, Breadcrumb, Popconfirm, message } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
-import openNotificationWithIcon from "../utils/notification";
+import { Link } from "react-router-dom";
+import "../css/ProductList.css"; // 和商品页面共用样式表
 
-const UnpublishedProducts = () => {
-  const [unpublishedProducts, setUnpublishedProducts] = useState([]);
+const ProductDrafts = () => {
+  const [products, setProducts] = useState([]);
 
-  // 将 fetchUnpublishedProducts 函数定义在 useEffect 外部
-  const fetchUnpublishedProducts = async () => {
+  const fetchProducts = async () => {
     try {
       const response = await axios.get("/product/drafts", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
         },
       });
-      setUnpublishedProducts(response.data);
+      setProducts(response.data);
     } catch (error) {
-      openNotificationWithIcon("error", "请求未发布的商品数据失败");
-      console.error("Error:", error);
+      console.error(error);
+      message.error("获取未发布的商品列表失败，请重试。");
     }
   };
 
   useEffect(() => {
-    // 调用 fetchUnpublishedProducts 函数
-    fetchUnpublishedProducts();
+    fetchProducts();
   }, []);
 
   const handlePublish = async (productId) => {
     try {
-      const response = await axios.patch(`/product/${productId}`, {
-        published: true,
-    }, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      const response = await axios.patch(
+        `/product/${productId}`,
+        {
+          published: true,
         },
-    });
-    
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
+      );
+
       if (response.status === 200) {
-        openNotificationWithIcon("success", "商品发布成功");
-        // 重新获取未发布的商品列表
-        fetchUnpublishedProducts();
+        message.success("商品发布成功");
+        // 重新获取已发布的商品列表
+        fetchProducts();
       } else {
-        throw new Error("发布商品失败");
+        throw new Error("发布发布失败");
       }
     } catch (error) {
-      openNotificationWithIcon("error", "商品发布失败");
+      message.error("商品发布失败，请重试。");
       console.error("Error:", error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      });
+
+      message.success("商品删除成功");
+      fetchProducts();
+    } catch (error) {
+      console.error("Delete category failed:", error);
+      message.error("商品删除失败，请重试。");
     }
   };
 
   const columns = [
     {
-      title: "商品ID",
+      title: "ID",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "商品名称",
+      title: "名称",
       dataIndex: "name",
       key: "name",
     },
@@ -64,9 +88,10 @@ const UnpublishedProducts = () => {
       title: "价格",
       dataIndex: "price",
       key: "price",
+      render: (price) => `¥${price.toFixed(2)}`,
     },
     {
-      title: "库存",
+      title: "库存(个)",
       dataIndex: "stock",
       key: "stock",
     },
@@ -79,19 +104,62 @@ const UnpublishedProducts = () => {
       title: "操作",
       key: "action",
       render: (text, record) => (
-        <Button type="primary" onClick={() => handlePublish(record.id)}>
-          发布
-        </Button>
+        <span>
+          <Link to={`/product-detail/${record.id}`}>
+            <Button
+              type="link"
+              icon={<QuestionCircleOutlined />}
+              className="edit-button"
+            >
+              详情
+            </Button>
+          </Link>
+          <Link to={`/product-form/edit/${record.id}`}>
+            <Button type="link" icon={<EditOutlined />} className="edit-button">
+              编辑
+            </Button>
+          </Link>
+          <Popconfirm
+            title="是否确认删除？"
+            okText="删除"
+            cancelText="取消"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <Button
+              type="link"
+              icon={<DeleteOutlined />}
+              className="delete-button"
+            >
+              删除
+            </Button>
+          </Popconfirm>
+          <Button type="primary" onClick={() => handlePublish(record.id)}>
+            发布
+          </Button>
+        </span>
       ),
     },
   ];
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>未发布的商品</h2>
-      <Table dataSource={unpublishedProducts} columns={columns} rowKey="id" />
+    <div className="product-list-container">
+      <Breadcrumb className="breadcrumb">
+        <Breadcrumb.Item>首页</Breadcrumb.Item>
+        <Breadcrumb.Item>还未发布</Breadcrumb.Item>
+      </Breadcrumb>
+      <h1 className="page-title">未发布商品列表</h1>
+      <Table
+        columns={columns}
+        dataSource={products}
+        rowKey="id"
+        pagination={{
+          showSizeChanger: true,
+          defaultPageSize: 5,
+          pageSizeOptions: ["5", "10"],
+        }}
+      />
     </div>
   );
 };
 
-export default UnpublishedProducts;
+export default ProductDrafts;

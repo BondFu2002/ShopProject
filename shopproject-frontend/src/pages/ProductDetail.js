@@ -30,6 +30,7 @@ const ProductDetail = () => {
   if (!product) {
     return <div>Loading...</div>;
   }
+  console.log(product);
 
   return (
     <div>
@@ -39,7 +40,7 @@ const ProductDetail = () => {
         <Descriptions.Item label="名称">{product.name}</Descriptions.Item>
         <Descriptions.Item label="价格">{product.price}</Descriptions.Item>
         <Descriptions.Item label="库存">{product.stock}</Descriptions.Item>
-        <Descriptions.Item label="分类">{product.category}</Descriptions.Item>
+        <Descriptions.Item label="分类">{product.category.name}</Descriptions.Item>
         <Descriptions.Item label="创建者">{product.CreatedBy.username}</Descriptions.Item>
         <Descriptions.Item label="最后修改者">{product.ModifiedBy.username}</Descriptions.Item>
         <Descriptions.Item label="描述">{product.description}</Descriptions.Item>
@@ -51,7 +52,7 @@ const ProductDetail = () => {
       </Link>
       <Link to="/product-list">
         <Button style={{ marginTop: 16, marginLeft: 8 }}>
-          返回列表
+          返回商品列表
         </Button>
       </Link>
     </div>

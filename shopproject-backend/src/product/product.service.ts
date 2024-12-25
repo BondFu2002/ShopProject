@@ -22,7 +22,7 @@ export class ProductService {
   findOne(id: number) {
     return this.prisma.product.findUnique({
       where: { id },
-      include: { CreatedBy: true, ModifiedBy: true },
+      include: { CreatedBy: true, ModifiedBy: true, category: true },
     });
   }
 

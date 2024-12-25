@@ -1,15 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, message, Switch, InputNumber } from "antd";
-import { useParams, useNavigate } from "react-router-dom";
+import { Form, Input, Button, message, Switch, InputNumber, Select } from "antd";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+
+const { Option } = Select;
 
 const ProductForm = () => {
   const [form] = Form.useForm();
   const { id } = useParams(); // 获取URL中的id参数
   const navigate = useNavigate(); // 用于导航
   const [isEdit, setIsEdit] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+    // 获取分类数据
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`/category`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        });
+        setCategories(response.data);
+      } catch (error) {
+        message.error("请求分类数据失败");
+        console.error("Error:", error);
+      }
+    };
+
+    fetchCategories();
+
+    // 如果是编辑模式，获取商品数据
     if (id) {
       setIsEdit(true);
       const fetchProductData = async (productId) => {
@@ -19,7 +40,10 @@ const ProductForm = () => {
               Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
             },
           });
-          form.setFieldsValue(response.data); // 设置表单的初始值
+          form.setFieldsValue({
+            ...response.data,
+            categoryId: response.data.categoryId, // 确保分类ID正确设置
+          });
         } catch (error) {
           message.error("请求商品数据失败");
           console.error("Error:", error);
@@ -38,7 +62,7 @@ const ProductForm = () => {
         // 更新商品
         const updatedValues = {
           ...values,
-          Mid: parseInt(localStorage.getItem("userId"), 10),
+          MId: parseInt(localStorage.getItem("userId"), 10),
         };
         response = await axios.patch(`/product/${id}`, updatedValues, {
           headers: {
@@ -49,17 +73,16 @@ const ProductForm = () => {
         // 创建商品
         const newValues = {
           ...values,
-          Mid: parseInt(localStorage.getItem("userId"), 10),
-          Cid: parseInt(localStorage.getItem("userId"), 10),
+          MId: parseInt(localStorage.getItem("userId"), 10),
+          CId: parseInt(localStorage.getItem("userId"), 10),
         };
-        console.log(localStorage.getItem("userId"))
-        console.log(newValues)
+        console.log(localStorage.getItem("userId"));
+        console.log(newValues);
         response = await axios.post(`/product`, newValues, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
         });
-        
       }
 
       console.log("Response:", response); // 打印响应
@@ -78,9 +101,11 @@ const ProductForm = () => {
 
   return (
     <Form form={form} onFinish={onFinish} layout="vertical">
-      <Form.Item label="商品ID" name="id" required={false}>
-        <InputNumber style={{ width: "100%" }} />
-      </Form.Item>
+      {isEdit && (
+        <Form.Item label="商品ID" name="id" required={false}>
+          <InputNumber style={{ width: "100%" }} disabled />
+        </Form.Item>
+      )}
 
       <Form.Item
         label="商品名称"
@@ -89,6 +114,7 @@ const ProductForm = () => {
       >
         <Input />
       </Form.Item>
+
       <Form.Item
         label="价格"
         name="price"
@@ -96,6 +122,7 @@ const ProductForm = () => {
       >
         <InputNumber style={{ width: "100%" }} />
       </Form.Item>
+
       <Form.Item
         label="库存"
         name="stock"
@@ -103,6 +130,7 @@ const ProductForm = () => {
       >
         <InputNumber style={{ width: "100%" }} />
       </Form.Item>
+
       <Form.Item
         label="商品描述"
         name="description"
@@ -110,6 +138,21 @@ const ProductForm = () => {
       >
         <Input.TextArea />
       </Form.Item>
+
+      <Form.Item
+        label="分类"
+        name="categoryId"
+        rules={[{ required: true, message: "请选择分类" }]}
+      >
+        <Select style={{ width: "100%" }}>
+          {categories.map((category) => (
+            <Option key={category.id} value={category.id}>
+              {category.name}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
+
       <Form.Item
         label="是否发布"
         name="published"
@@ -119,17 +162,19 @@ const ProductForm = () => {
       >
         <Switch />
       </Form.Item>
-      {/* <Form.Item label="创建者ID" name="Cid">
-        {localStorage.getItem("userId")}
-      </Form.Item>
-      <Form.Item label="更新者ID" name="Mid">
-        {localStorage.getItem("userId")}
-      </Form.Item> */}
 
       <Form.Item>
         <Button type="primary" htmlType="submit">
           {isEdit ? "更新商品" : "创建商品"}
         </Button>
+      </Form.Item>
+
+      <Form.Item>
+        <Link to="/product-list">
+          <Button style={{ marginTop: 16, marginLeft: 8 }}>
+            返回商品列表
+          </Button>
+        </Link>
       </Form.Item>
     </Form>
   );

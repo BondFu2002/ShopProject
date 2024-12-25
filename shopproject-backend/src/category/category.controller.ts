@@ -12,7 +12,12 @@ import {
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { CategoryEntity } from './entities/category.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -23,6 +28,7 @@ export class CategoryController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiCreatedResponse({ type: CategoryEntity })
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
@@ -30,6 +36,7 @@ export class CategoryController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: CategoryEntity, isArray: true })
   findAll() {
     return this.categoryService.findAll();
@@ -37,6 +44,7 @@ export class CategoryController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: CategoryEntity })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.categoryService.findOne(id);
@@ -44,6 +52,7 @@ export class CategoryController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: CategoryEntity })
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -54,6 +63,7 @@ export class CategoryController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: CategoryEntity })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.categoryService.remove(id);

@@ -19,11 +19,11 @@ export class ProductEntity implements Product {
   @ApiProperty()
   stock: number;
 
-  @ApiProperty({ required: false, nullable: true })
-  categoryId: number | null;
+  @ApiProperty()
+  categoryId: number;
 
   @ApiProperty({ required: false, type: CategoryEntity })
-  category?: CategoryEntity;
+  category: CategoryEntity;
 
   @ApiProperty()
   published: boolean;
