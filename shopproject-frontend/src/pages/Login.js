@@ -29,11 +29,11 @@ const Login = () => {
     onSubmit: async (values) => { // 定义表单提交时的处理逻辑
       try {
         const response = await axios.post('/auth/login', values); // 发送 POST 请求到 /auth/login 接口，请求体包含表单数据
-        const accessToken = response.data.accessToken; // 获取返回的 accessToken
-        const userName = response.data.userName; // 获取返回的用户名
+
         // 存储 accessToken 到 localStorage
-        localStorage.setItem('jwtToken', accessToken);
-        localStorage.setItem('userName', userName);
+        localStorage.setItem('jwtToken', response.data.accessToken);
+        localStorage.setItem('userName', response.data.userName);
+        localStorage.setItem('userId', response.data.userId);
 
         openNotificationWithIcon('success', '登录成功', '欢迎回来！'); // 调用自定义的通知函数，显示登录成功的通知
 

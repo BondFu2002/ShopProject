@@ -37,11 +37,11 @@ export class ProductEntity implements Product {
   @ApiProperty()
   updatedAt: Date;
 
-  @ApiProperty({ required: false, nullable: true })
-  MId: number | null;
+  @ApiProperty()
+  MId: number;
 
-  @ApiProperty({ required: false, nullable: true })
-  CId: number | null;
+  @ApiProperty()
+  CId: number;
 
   @ApiProperty({ required: false, type: UserEntity })
   CreatedBy?: UserEntity;

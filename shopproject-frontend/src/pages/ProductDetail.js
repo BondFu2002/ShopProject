@@ -40,8 +40,8 @@ const ProductDetail = () => {
         <Descriptions.Item label="价格">{product.price}</Descriptions.Item>
         <Descriptions.Item label="库存">{product.stock}</Descriptions.Item>
         <Descriptions.Item label="分类">{product.category}</Descriptions.Item>
-        <Descriptions.Item label="创建者">{product.CreatedBy}</Descriptions.Item>
-        <Descriptions.Item label="最后修改者">{product.ModifiedBy}</Descriptions.Item>
+        <Descriptions.Item label="创建者">{product.CreatedBy.username}</Descriptions.Item>
+        <Descriptions.Item label="最后修改者">{product.ModifiedBy.username}</Descriptions.Item>
         <Descriptions.Item label="描述">{product.description}</Descriptions.Item>
       </Descriptions>
       <Link to={`/product-form/edit/${product.id}`}>

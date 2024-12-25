@@ -14,7 +14,7 @@ const ProductForm = () => {
       setIsEdit(true);
       const fetchProductData = async (productId) => {
         try {
-          const response = await axios.get(`/product/${productId}`,{
+          const response = await axios.get(`/product/${productId}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
             },
@@ -36,18 +36,30 @@ const ProductForm = () => {
       let response;
       if (isEdit) {
         // 更新商品
-        response = await axios.patch(`/product/${id}`, values,{
+        const updatedValues = {
+          ...values,
+          Mid: parseInt(localStorage.getItem("userId"), 10),
+        };
+        response = await axios.patch(`/product/${id}`, updatedValues, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
         });
       } else {
         // 创建商品
-        response = await axios.post(`/product`, values,{
+        const newValues = {
+          ...values,
+          Mid: parseInt(localStorage.getItem("userId"), 10),
+          Cid: parseInt(localStorage.getItem("userId"), 10),
+        };
+        console.log(localStorage.getItem("userId"))
+        console.log(newValues)
+        response = await axios.post(`/product`, newValues, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
         });
+        
       }
 
       console.log("Response:", response); // 打印响应
@@ -107,6 +119,13 @@ const ProductForm = () => {
       >
         <Switch />
       </Form.Item>
+      {/* <Form.Item label="创建者ID" name="Cid">
+        {localStorage.getItem("userId")}
+      </Form.Item>
+      <Form.Item label="更新者ID" name="Mid">
+        {localStorage.getItem("userId")}
+      </Form.Item> */}
+
       <Form.Item>
         <Button type="primary" htmlType="submit">
           {isEdit ? "更新商品" : "创建商品"}

@@ -46,6 +46,7 @@ const ShopLayout = () => {
     // 清除 JWT 令牌
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('userName');
+    localStorage.removeItem('userId');
     // 导航到登录页面
     navigate('/login');
   };

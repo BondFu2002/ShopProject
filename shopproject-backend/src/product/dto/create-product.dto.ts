@@ -10,6 +10,11 @@ import {
 } from 'class-validator';
 
 export class CreateProductDto {
+  // @IsNumber()
+  // @IsNotEmpty()
+  // @ApiProperty()
+  // id: number;
+
   @MinLength(2)
   @IsString()
   @IsNotEmpty()
@@ -38,6 +43,16 @@ export class CreateProductDto {
   // @IsNotEmpty()
   // @ApiProperty({ required: false })
   // category?: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  CId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  MId: number;
 
   @IsBoolean()
   @IsOptional()

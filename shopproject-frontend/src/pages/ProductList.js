@@ -32,10 +32,12 @@ const ProductList = () => {
     try {
       const response = await axios.patch(`/product/${productId}`, {
         published: false,
+    }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
         },
-      });
+    });
+    
       if (response.status === 200) {
         openNotificationWithIcon("success", "商品下架成功");
         // 重新获取已发布的商品列表

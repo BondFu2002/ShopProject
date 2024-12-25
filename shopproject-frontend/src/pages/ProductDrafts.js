@@ -30,10 +30,12 @@ const UnpublishedProducts = () => {
     try {
       const response = await axios.patch(`/product/${productId}`, {
         published: true,
+    }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
         },
-      });
+    });
+    
       if (response.status === 200) {
         openNotificationWithIcon("success", "商品发布成功");
         // 重新获取未发布的商品列表
