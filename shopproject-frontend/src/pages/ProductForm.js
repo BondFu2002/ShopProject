@@ -14,7 +14,11 @@ const ProductForm = () => {
       setIsEdit(true);
       const fetchProductData = async (productId) => {
         try {
-          const response = await axios.get(`/product/${productId}`);
+          const response = await axios.get(`/product/${productId}`,{
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            },
+          });
           form.setFieldsValue(response.data); // 设置表单的初始值
         } catch (error) {
           message.error("请求商品数据失败");
@@ -32,10 +36,18 @@ const ProductForm = () => {
       let response;
       if (isEdit) {
         // 更新商品
-        response = await axios.patch(`/product/${id}`, values);
+        response = await axios.patch(`/product/${id}`, values,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        });
       } else {
         // 创建商品
-        response = await axios.post(`/product`, values);
+        response = await axios.post(`/product`, values,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        });
       }
 
       console.log("Response:", response); // 打印响应

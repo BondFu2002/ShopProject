@@ -3,7 +3,7 @@ import { Layout, Typography } from "antd";
 import "../css/Home.css"; // 用于引入自定义的CSS样式
 
 const { Content } = Layout;
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 const Home = () => {
   return (

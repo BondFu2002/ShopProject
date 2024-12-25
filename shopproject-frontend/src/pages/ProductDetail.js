@@ -12,7 +12,11 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`/product/${id}`); // 注意这里没有前缀 /api
+        const response = await axios.get(`/product/${id}`,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }); // 注意这里没有前缀 /api
         setProduct(response.data);
       } catch (error) {
         console.error(error);

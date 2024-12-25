@@ -12,7 +12,11 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("/product"); // 注意这里没有前缀 /api
+      const response = await axios.get("/product",{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      }); // 注意这里没有前缀 /api
       setProducts(response.data);
     } catch (error) {
       console.error(error);
@@ -28,6 +32,9 @@ const ProductList = () => {
     try {
       const response = await axios.patch(`/product/${productId}`, {
         published: false,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
       });
       if (response.status === 200) {
         openNotificationWithIcon("success", "商品下架成功");
