@@ -1,38 +1,44 @@
 /* ProductList.css */
 .product-list-container {
-    padding: 24px;
-    background: #fff;
-  }
-  
-  .breadcrumb {
-    margin-bottom: 16px;
-  }
-  
-  .page-title {
-    margin-bottom: 16px;
-  }
-  
-  .create-button {
-    margin-bottom: 16px;
-  }
-  
-  .edit-button, .delete-button {
-    margin-right: 8px;
-  }
-  
-  .ant-table-wrapper {
-    margin-top: 16px;
-  }
-  
-  .ant-modal-content {
-    padding: 24px;
-  }
-  
-  .ant-modal-footer {
-    text-align: center;
-  }
-  
-  .ant-modal-footer button {
-    margin-right: 8px;
-  }
-  
+  padding: 24px;
+  background: #fff;
+}
+.search-input {
+  right: 200px;
+  float: right;
+  width: 400px;
+  position: relative;
+}
+
+.breadcrumb {
+  margin-bottom: 16px;
+}
+
+.page-title {
+  margin-bottom: 16px;
+}
+
+.create-button {
+  margin-bottom: 16px;
+}
+
+.edit-button,
+.delete-button {
+  margin-right: 8px;
+}
+
+.ant-table-wrapper {
+  margin-top: 16px;
+}
+
+.ant-modal-content {
+  padding: 24px;
+}
+
+.ant-modal-footer {
+  text-align: center;
+}
+
+.ant-modal-footer button {
+  margin-right: 8px;
+}

@@ -1,0 +1,41 @@
+/* ProductDetail.css */
+
+.product-detail-container {
+    margin: 24px;
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .page-title {
+    font-size: 24px;
+    margin-bottom: 24px;
+    color: #333333;
+  }
+  
+  .descriptions {
+    margin-bottom: 24px;
+  }
+  
+  .descriptions-item {
+    margin-bottom: 16px; 
+  }
+  
+  .buttons-container {
+    margin-top: 16px;
+  }
+  
+  .buttons-container a {
+    margin-right: 8px;
+  }
+  
+  .buttons-container button {
+    border-radius: 4px;
+  }
+  
+  .buttons-container button:hover {
+    background-color: #1890ff;
+    color: #ffffff;
+  }
+  

@@ -1,4 +1,3 @@
-// CategoryList.jsx
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Form, Input, message, Popconfirm, Breadcrumb } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -164,7 +163,7 @@ const CategoryList = () => {
       />
       <Modal
         title={isEdit ? "编辑分类" : "创建分类"}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         className="category-modal"

@@ -1,6 +1,5 @@
-// ProductList.jsx
 import React, { useEffect, useState } from "react";
-import { Table, Button, Breadcrumb, Popconfirm, message } from "antd";
+import { Table, Button, Breadcrumb, Popconfirm, message, Select, Input } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -10,27 +9,72 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../css/ProductList.css"; // 引入 CSS 文件
+import dayjs from 'dayjs';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const { Option } = Select;
+  const [categories, setCategories] = useState([]);
+  const { Search } = Input;
 
-  const fetchProducts = async () => {
+  const onSearch = (value) => {
+    setSearchKeyword(value);
+    fetchProducts(selectedCategory, value);
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`/category`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      });
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Fetch categories failed:", error);
+      message.error("获取分类列表失败，请重试。");
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+  }, []);
+
+  const fetchProducts = async (category = "", keyword = "") => {
     try {
       const response = await axios.get("/product", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
         },
       });
-      setProducts(response.data);
+
+      let filteredProducts = response.data;
+
+      if (category) {
+        filteredProducts = filteredProducts.filter((item) => item.category.name === category);
+      }
+
+      if (keyword) {
+        filteredProducts = filteredProducts.filter((item) => 
+          item.name.toLowerCase().includes(keyword.toLowerCase()) ||
+          item.description.toLowerCase().includes(keyword.toLowerCase())
+        );
+      }
+
+      setProducts(filteredProducts);
     } catch (error) {
       console.error(error);
       message.error("获取商品列表失败，请重试。");
     }
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+    fetchProducts(value, searchKeyword);
+  };
 
   const handlePublish = async (productId) => {
     try {
@@ -48,8 +92,7 @@ const ProductList = () => {
 
       if (response.status === 200) {
         message.success("商品下架成功");
-        // 重新获取已发布的商品列表
-        fetchProducts();
+        fetchProducts(selectedCategory, searchKeyword);
       } else {
         throw new Error("发布下架失败");
       }
@@ -68,7 +111,7 @@ const ProductList = () => {
       });
 
       message.success("商品删除成功");
-      fetchProducts();
+      fetchProducts(selectedCategory, searchKeyword);
     } catch (error) {
       console.error("Delete category failed:", error);
       message.error("商品删除失败，请重试。");
@@ -98,9 +141,16 @@ const ProductList = () => {
       key: "stock",
     },
     {
-      title: "商品描述",
-      dataIndex: "description",
-      key: "description",
+      title: "创建时间",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (createdAt) => dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      title: "更新时间",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (updatedAt) => dayjs(updatedAt).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: "操作",
@@ -150,6 +200,12 @@ const ProductList = () => {
         <Breadcrumb.Item>商品管理</Breadcrumb.Item>
       </Breadcrumb>
       <h1 className="page-title">商品列表</h1>
+      <Search
+        className="search-input"
+        placeholder="输入搜索文本"
+        onSearch={onSearch}
+        enterButton
+      />
       <Link to="/product-form/create">
         <Button
           type="primary"
@@ -159,6 +215,22 @@ const ProductList = () => {
           创建商品
         </Button>
       </Link>
+      <div className="category-select">
+        <span>分类：</span>
+        <Select
+          style={{ width: 120 }}
+          placeholder="选择类别"
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+        >
+          <Option value="">全部</Option>
+          {categories.map((category) => (
+            <Option key={category.id} value={category.name}>
+              {category.name}
+            </Option>
+          ))}
+        </Select>
+      </div>
       <Table
         columns={columns}
         dataSource={products}

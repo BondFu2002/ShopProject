@@ -12,7 +12,10 @@ export class ProductService {
   }
 
   findAll() {
-    return this.prisma.product.findMany({ where: { published: true } });
+    return this.prisma.product.findMany({
+      where: { published: true },
+      include: { CreatedBy: true, ModifiedBy: true, category: true },
+    });
   }
 
   findDrafts() {

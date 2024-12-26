@@ -1,9 +1,9 @@
-// src/pages/ProductDetail.js
 import React, { useEffect, useState } from 'react';
 import { Descriptions, Button } from 'antd';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import openNotificationWithIcon from '../utils/notification';
+import '../css/ProductDetail.css'; // 引入 CSS 文件
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -12,7 +12,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`/product/${id}`,{
+        const response = await axios.get(`/product/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
@@ -30,31 +30,32 @@ const ProductDetail = () => {
   if (!product) {
     return <div>Loading...</div>;
   }
-  console.log(product);
 
   return (
-    <div>
-      <h1>商品详情</h1>
-      <Descriptions title={product.name} bordered>
-        <Descriptions.Item label="ID">{product.id}</Descriptions.Item>
-        <Descriptions.Item label="名称">{product.name}</Descriptions.Item>
-        <Descriptions.Item label="价格">{product.price}</Descriptions.Item>
-        <Descriptions.Item label="库存">{product.stock}</Descriptions.Item>
-        <Descriptions.Item label="分类">{product.category.name}</Descriptions.Item>
-        <Descriptions.Item label="创建者">{product.CreatedBy.username}</Descriptions.Item>
-        <Descriptions.Item label="最后修改者">{product.ModifiedBy.username}</Descriptions.Item>
-        <Descriptions.Item label="描述">{product.description}</Descriptions.Item>
+    <div className="product-detail-container">
+      <h1 className="page-title">商品详情</h1>
+      <Descriptions className="descriptions" title={product.name} bordered column={1}>
+        <Descriptions.Item className="descriptions-item" label="ID">{product.id}</Descriptions.Item>
+        <Descriptions.Item className="descriptions-item" label="名称">{product.name}</Descriptions.Item>
+        <Descriptions.Item className="descriptions-item" label="价格">¥{product.price.toFixed(2)}</Descriptions.Item>
+        <Descriptions.Item className="descriptions-item" label="库存">{product.stock}</Descriptions.Item>
+        <Descriptions.Item className="descriptions-item" label="分类">{product.category.name}</Descriptions.Item>
+        <Descriptions.Item className="descriptions-item" label="创建者">{product.CreatedBy.username}</Descriptions.Item>
+        <Descriptions.Item className="descriptions-item" label="最后修改者">{product.ModifiedBy.username}</Descriptions.Item>
+        <Descriptions.Item className="descriptions-item" label="描述">{product.description}</Descriptions.Item>
       </Descriptions>
-      <Link to={`/product-form/edit/${product.id}`}>
-        <Button type="primary" style={{ marginTop: 16 }}>
-          编辑商品
-        </Button>
-      </Link>
-      <Link to="/product-list">
-        <Button style={{ marginTop: 16, marginLeft: 8 }}>
-          返回商品列表
-        </Button>
-      </Link>
+      <div className="buttons-container">
+        <Link to={`/product-form/edit/${product.id}`}>
+          <Button type="primary">
+            编辑商品
+          </Button> 
+        </Link>
+        <Link to="/product-list">
+          <Button>
+            返回商品列表
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };

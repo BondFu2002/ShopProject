@@ -4,13 +4,14 @@
   
   .header {
     padding: 0;
+    background: '#1890ff';
   }
   
-  /* .logo {
+  .logo {
     width: 200px;
-    height: 60px;
-    background: url('~@/assets/logo.png') no-repeat center / 160px auto;
-  } */
+    height: 66px;
+    background: url('../assets/logo.png') no-repeat center / 160px auto;
+  }
   
   .layout-content {
     overflow-y: auto;

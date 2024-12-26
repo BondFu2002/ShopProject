@@ -68,7 +68,7 @@ const ShopLayout = () => {
         <Sider width={200} className="site-layout-background">
           <Menu
             mode="inline"
-            theme="dark"
+            theme="light"
             defaultSelectedKeys={[selectedKey]}
             items={items}
             style={{ height: "100%", borderRight: 0 }}
