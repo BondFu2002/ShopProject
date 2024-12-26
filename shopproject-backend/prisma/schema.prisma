@@ -58,5 +58,5 @@ model User {
 
 model AdminPassword{
   id Int @id @default(autoincrement())
-  password Int @unique @default(123456)
+  password String @unique 
 }

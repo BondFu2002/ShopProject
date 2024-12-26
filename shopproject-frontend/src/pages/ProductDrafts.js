@@ -96,10 +96,18 @@ const ProductDrafts = () => {
       key: "stock",
     },
     {
-      title: "商品描述",
-      dataIndex: "description",
-      key: "description",
+      title: "创建时间",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => new Date(text).toLocaleString(),
     },
+    {
+      title: "更新时间",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (text) => new Date(text).toLocaleString(),
+    },
+    
     {
       title: "操作",
       key: "action",

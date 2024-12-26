@@ -1,10 +1,9 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox, Space, Typography } from 'antd'; // 导入 Ant Design 的组件
+import { Form, Input, Button, Checkbox, Space, Typography ,message} from 'antd'; // 导入 Ant Design 的组件
 import { useFormik } from 'formik'; // 导入 Formik 钩子用于表单处理
 import * as Yup from 'yup'; // 导入 Yup 用于表单验证规则
 import axios from 'axios'; // 导入 axios 用于 HTTP 请求
 import { useNavigate } from 'react-router-dom'; // 导入 useNavigate 钩子用于路由导航
-import openNotificationWithIcon from '../utils/notification'; // 导入自定义的通知函数
 import '../css/Login.css'; // 引入自定义的登录页面样式
 
 const { Title } = Typography; // 解构出 Typography 中的 Title 组件
@@ -34,14 +33,15 @@ const Login = () => {
         localStorage.setItem('jwtToken', response.data.accessToken);
         localStorage.setItem('userName', response.data.userName);
         localStorage.setItem('userId', response.data.userId);
+        localStorage.setItem('userRole', response.data.role);
 
-        openNotificationWithIcon('success', '登录成功', '欢迎回来！'); // 调用自定义的通知函数，显示登录成功的通知
+        message.success('登录成功, 欢迎回来！'); // 调用自定义的通知函数，显示登录成功的通知
 
         // 导航到主页
         navigate('/');
       } catch (error) {
         console.error(error); // 打印错误信息到控制台
-        openNotificationWithIcon('error', '登录失败', '请检查输入的信息并重试。'); // 调用自定义的通知函数，显示登录失败的通知
+        message.error('登录失败，请检查输入的信息并重试。'); // 调用自定义的通知函数，显示登录失败的通知
       }
     },
   });

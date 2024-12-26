@@ -8,6 +8,8 @@ import ProductForm from "../pages/ProductForm";
 import Layout from "../pages/Layout";
 import Home from "../pages/Home";
 import UnpublishedProducts from "../pages/ProductDrafts"
+import UserList from "../pages/UserList"
+
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -32,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/category-list",
         element: <CategoryList />,
+      },
+      {
+        path: "/user-list",
+        element: <UserList />,
       },
 
       {

@@ -5,6 +5,7 @@ import {
   ShoppingOutlined,
   TableOutlined,
   HomeOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import "../css/Layout.css";
 
@@ -31,6 +32,11 @@ const items = [
     key: "product-drafts",
     icon: <ShoppingOutlined />,
   },
+  {
+    label: "用户管理",
+    key: "user-list",
+    icon: <UserOutlined />,
+  },
 ];
 
 const ShopLayout = () => {
@@ -44,11 +50,12 @@ const ShopLayout = () => {
   // 定义退出操作
   const handleLogout = () => {
     // 清除 JWT 令牌
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userId');
+    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userRole");
     // 导航到登录页面
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -56,9 +63,19 @@ const ShopLayout = () => {
       <Header className="header">
         <div className="logo" />
         <div className="user-info">
-          <span className="user-name">Hi! {localStorage.getItem('userName')}</span>
+          <span className="user-name">
+            Hi! {localStorage.getItem("userName")}{" "}
+            <span className="user-role">
+              ({localStorage.getItem("userRole")})
+            </span>
+          </span>
           <span className="user-logout">
-            <Popconfirm title="是否确认退出？" okText="退出" cancelText="取消" onConfirm={handleLogout}>
+            <Popconfirm
+              title="是否确认退出？"
+              okText="退出"
+              cancelText="取消"
+              onConfirm={handleLogout}
+            >
               <LogoutOutlined /> 退出
             </Popconfirm>
           </span>
@@ -69,7 +86,7 @@ const ShopLayout = () => {
           <Menu
             mode="inline"
             theme="light"
-            defaultSelectedKeys={[selectedKey]}
+            SelectedKeys={selectedKey}
             items={items}
             style={{ height: "100%", borderRight: 0 }}
             onClick={menuClick}

@@ -8,4 +8,6 @@ export class AuthEntity {
   userName: string;
   @ApiProperty()
   userId: number;
+  @ApiProperty()
+  role: string;
 }

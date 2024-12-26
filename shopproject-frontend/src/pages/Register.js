@@ -1,9 +1,8 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox, Space, Typography } from 'antd';
+import { Form, Input, Button, Checkbox, Space, Typography ,message} from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import openNotificationWithIcon from '../utils/notification';
 import { useNavigate } from 'react-router-dom'; // 导入 useNavigate 钩子，用于页面导航
 import '../css/Register.css'; // 引入自定义样式文件
 
@@ -31,11 +30,11 @@ const Register = () => {
       try {
         const response = await axios.post('/users', values); // 发送 POST 请求到 /users 接口进行注册
         console.log(response.data); // 打印后端返回的数据
-        openNotificationWithIcon('success', '注册成功', '欢迎加入我们的平台！'); // 显示注册成功的通知
+        message.success('注册成功, 欢迎加入我们的平台！'); // 显示注册成功的通知
         navigate('/login'); // 注册成功后跳转到登录页面
       } catch (error) {
         console.error(error); // 打印错误信息
-        openNotificationWithIcon('error', '注册失败', '请检查输入的信息并重试。'); // 显示注册失败的通知
+        message.error('注册失败, 请检查输入的信息并重试。'); // 显示注册失败的通知
       }
     },
   });

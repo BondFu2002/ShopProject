@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../css/ProductList.css"; // 引入 CSS 文件
-import dayjs from 'dayjs';
+
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -144,13 +144,13 @@ const ProductList = () => {
       title: "创建时间",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (createdAt) => dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss'),
+      render: (text) => new Date(text).toLocaleString(),
     },
     {
       title: "更新时间",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      render: (updatedAt) => dayjs(updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      render: (text) => new Date(text).toLocaleString(),
     },
     {
       title: "操作",
@@ -185,7 +185,7 @@ const ProductList = () => {
               删除
             </Button>
           </Popconfirm>
-          <Button type="primary" onClick={() => handlePublish(record.id)}>
+          <Button type="primary" onClick={() => handlePublish(record.id)} danger>
             下架
           </Button>
         </span>

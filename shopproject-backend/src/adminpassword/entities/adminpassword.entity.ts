@@ -6,5 +6,5 @@ export class Adminpassword implements AdminPassword {
   id: number;
 
   @ApiProperty()
-  password: number;
+  password: string;
 }

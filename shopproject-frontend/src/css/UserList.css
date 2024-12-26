@@ -1,13 +1,6 @@
-
-.product-list-container {
+.user-list-container {
   padding: 24px;
   background: #fff;
-}
-.search-input {
-  right: 200px;
-  float: right;
-  width: 400px;
-  position: relative;
 }
 
 .breadcrumb {
@@ -20,6 +13,9 @@
 
 .create-button {
   margin-bottom: 16px;
+}
+.regist-admin-button {
+  float: right;
 }
 
 .edit-button,

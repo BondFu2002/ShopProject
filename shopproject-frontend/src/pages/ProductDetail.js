@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Descriptions, Button } from 'antd';
+import { Descriptions, Button ,message} from 'antd';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import openNotificationWithIcon from '../utils/notification';
+
 import '../css/ProductDetail.css'; // 引入 CSS 文件
 
 const ProductDetail = () => {
@@ -20,7 +20,7 @@ const ProductDetail = () => {
         setProduct(response.data);
       } catch (error) {
         console.error(error);
-        openNotificationWithIcon('error', '获取商品详情失败', '请重试。');
+        message.error('获取商品详情失败, 请重试。');
       }
     };
 
@@ -55,6 +55,12 @@ const ProductDetail = () => {
             返回商品列表
           </Button>
         </Link>
+        <Link to="/product-drafts">
+          <Button>
+            返回未发布商品列表
+          </Button>
+        </Link>
+
       </div>
     </div>
   );
