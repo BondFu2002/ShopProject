@@ -8,6 +8,7 @@ import {
   message,
   Popconfirm,
   Breadcrumb,
+  Select,
 } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -22,6 +23,7 @@ const UserList = () => {
   const [form] = Form.useForm();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { Option } = Select;
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -36,7 +38,7 @@ const UserList = () => {
         );
         const user = response.data;
         setIsAdmin(user.role === "ADMIN");
-        if (user.role === "USER") {
+        if (user.role === "NORMAL") {
           setIsPasswordModalVisible(true);
         } else {
           fetchUsers();
@@ -65,8 +67,6 @@ const UserList = () => {
       message.error("获取用户列表失败，请重试。");
     }
   };
-
-  
 
   const showEditModal = (record) => {
     setIsEditModalVisible(true);
@@ -106,6 +106,7 @@ const UserList = () => {
   const handleEditOk = async () => {
     try {
       const values = await form.validateFields();
+      console.log(values);
       await axios.patch(`/users/${editingUser.id}`, values, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
@@ -122,23 +123,22 @@ const UserList = () => {
   const handleEditCancel = () => {
     setIsEditModalVisible(false);
     form.resetFields();
+    setEditingUser(null); // 重置 editingUser 为 null
   };
 
   const handleDelete = async (id) => {
-    
-      try {
-        await axios.delete(`/users/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
-        });
-        message.success("用户删除成功");
-        fetchUsers();
-      } catch (error) {
-        console.error("Delete user failed:", error);
-        message.error("删除用户失败，请重试。");
-      }
-    
+    try {
+      await axios.delete(`/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      });
+      message.success("用户删除成功");
+      fetchUsers();
+    } catch (error) {
+      console.error("Delete user failed:", error);
+      message.error("删除用户失败，请重试。");
+    }
   };
 
   const columns = [
@@ -277,10 +277,24 @@ const UserList = () => {
           >
             <Input />
           </Form.Item>
+
+          {editingUser && editingUser.role !== "ADMIN" && (
+            <Form.Item
+              label="身份"
+              name="role"
+              rules={[{ required: true, message: "请选择身份" }]}
+            >
+              <Select>
+                <Option value="USER">普通用户</Option>
+                <Option value="NORMAL">普通管理员</Option>
+              </Select>
+            </Form.Item>
+          )}
+
           <Form.Item
-            label="密码"
+            label="密码(不做更改请留空)"
             name="password"
-            rules={[{ required: true, message: "请输入密码" }]}
+            rules={[{ required: false, message: "请输入密码" }]}
           >
             <Input.Password />
           </Form.Item>

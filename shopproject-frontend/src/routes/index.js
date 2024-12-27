@@ -9,6 +9,7 @@ import Layout from "../pages/Layout";
 import Home from "../pages/Home";
 import UnpublishedProducts from "../pages/ProductDrafts"
 import UserList from "../pages/UserList"
+import AuthRoute from "../components/AuthRoute";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Layout />,
+    element:<AuthRoute> <Layout /></AuthRoute>,
     children: [
       {
         index: true,

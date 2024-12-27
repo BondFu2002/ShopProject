@@ -39,10 +39,7 @@ model Category {
   products    Product[]
 }
 
-enum Role {
-  USER
-  ADMIN
-}
+
 
 model User {
   id               Int       @id @default(autoincrement())
@@ -51,7 +48,7 @@ model User {
   password         String
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
-  role             Role      @default(USER)
+  role             String      @default("USER")
   createdProducts  Product[] @relation("ProductToCreatedByUser") // 可选：反向关系字段
   modifiedProducts Product[] @relation("ProductToModifiedByUser") // 可选：反向关系字段
 }

@@ -16,6 +16,7 @@ const LoginSchema = Yup.object().shape({
 
 // 定义登录组件
 const Login = () => {
+  localStorage.clear(); // 清除 localStorage 中的数据
   const navigate = useNavigate(); // 初始化 useNavigate 钩子，用于在提交表单后导航到注册页面或主页
 
   // 使用 Formik 来管理表单的状态和验证逻辑

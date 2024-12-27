@@ -17,26 +17,31 @@ const items = [
     key: "",
     icon: <HomeOutlined />,
   },
-  {
-    label: "商品管理",
-    key: "product-list",
-    icon: <ShoppingOutlined />,
-  },
-  {
-    label: "分类管理",
-    key: "category-list",
-    icon: <TableOutlined />,
-  },
-  {
-    label: "还未发布",
-    key: "product-drafts",
-    icon: <ShoppingOutlined />,
-  },
-  {
-    label: "用户管理",
-    key: "user-list",
-    icon: <UserOutlined />,
-  },
+  ...(localStorage.getItem("userRole") !== "USER"
+    ? [
+        {
+          label: "商品管理",
+          key: "product-list",
+          icon: <ShoppingOutlined />,
+        },
+
+        {
+          label: "分类管理",
+          key: "category-list",
+          icon: <TableOutlined />,
+        },
+        {
+          label: "还未发布",
+          key: "product-drafts",
+          icon: <ShoppingOutlined />,
+        },
+        {
+          label: "用户管理",
+          key: "user-list",
+          icon: <UserOutlined />,
+        },
+      ]
+    : []),
 ];
 
 const ShopLayout = () => {
@@ -50,10 +55,7 @@ const ShopLayout = () => {
   // 定义退出操作
   const handleLogout = () => {
     // 清除 JWT 令牌
-    localStorage.removeItem("jwtToken");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userRole");
+    localStorage.clear();
     // 导航到登录页面
     navigate("/login");
   };
