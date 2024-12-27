@@ -5,20 +5,17 @@ import {
   EditOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
+
 import { Link } from "react-router-dom";
-import "../css/ProductList.css"; // 和商品页面共用样式表
+import "../../css/Product/ProductList.css"; // 和商品页面共用样式表
+import apiClient from "../../components/apiClient";
 
 const ProductDrafts = () => {
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("/product/drafts", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      const response = await apiClient.get("/product/drafts");
       setProducts(response.data);
     } catch (error) {
       console.error(error);
@@ -32,24 +29,16 @@ const ProductDrafts = () => {
 
   const handlePublish = async (productId) => {
     try {
-      const response = await axios.patch(
-        `/product/${productId}`,
-        {
-          published: true,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
-        }
-      );
+      const response = await apiClient.patch(`/product/${productId}`, {
+        published: true,
+      });
 
       if (response.status === 200) {
         message.success("商品发布成功");
         // 重新获取已发布的商品列表
         fetchProducts();
       } else {
-        throw new Error("发布发布失败");
+        throw new Error("发布失败");
       }
     } catch (error) {
       message.error("商品发布失败，请重试。");
@@ -59,11 +48,7 @@ const ProductDrafts = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/product/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      await apiClient.delete(`/product/${id}`);
 
       message.success("商品删除成功");
       fetchProducts();
@@ -78,6 +63,8 @@ const ProductDrafts = () => {
       title: "ID",
       dataIndex: "id",
       key: "id",
+      sorter: (a, b) => a.id - b.id, // 添加排序函数
+      defaultSortOrder: 'ascend', // 默认排序为升序
     },
     {
       title: "名称",
@@ -89,6 +76,7 @@ const ProductDrafts = () => {
       dataIndex: "price",
       key: "price",
       render: (price) => `¥${price.toFixed(2)}`,
+      sorter: (a, b) => a.price - b.price, // 添加排序
     },
     {
       title: "库存(个)",
@@ -100,14 +88,15 @@ const ProductDrafts = () => {
       dataIndex: "createdAt",
       key: "createdAt",
       render: (text) => new Date(text).toLocaleString(),
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt), // 添加排序
     },
     {
       title: "更新时间",
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (text) => new Date(text).toLocaleString(),
+      sorter: (a, b) => new Date(a.updatedAt) - new Date(b.updatedAt), // 添加排序
     },
-    
     {
       title: "操作",
       key: "action",
@@ -141,13 +130,28 @@ const ProductDrafts = () => {
               删除
             </Button>
           </Popconfirm>
-          <Button type="primary" onClick={() => handlePublish(record.id)}>
+          <Button type="primary" onClick={() => handlePublish(record.id)} className="publish-button">
             发布
           </Button>
         </span>
       ),
     },
   ];
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    const { field, order } = sorter;
+    if (field) {
+      const sortedProducts = [...products].sort((a, b) => {
+        if (order === 'ascend') {
+          return a[field] > b[field] ? 1 : -1;
+        } else if (order === 'descend') {
+          return a[field] < b[field] ? 1 : -1;
+        }
+        return 0;
+      });
+      setProducts(sortedProducts);
+    }
+  };
 
   return (
     <div className="product-list-container">
@@ -165,6 +169,7 @@ const ProductDrafts = () => {
           defaultPageSize: 5,
           pageSizeOptions: ["5", "10"],
         }}
+        onChange={handleTableChange} // 注册表格变化的处理函数
       />
     </div>
   );

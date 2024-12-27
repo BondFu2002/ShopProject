@@ -18,9 +18,10 @@
   float: right;
 }
 
-.edit-button,
-.delete-button {
-  margin-right: 8px;
+.user-edit-button,
+.user-delete-button {
+  margin-right: 20%;
+  width: 20%;
 }
 
 .ant-table-wrapper {

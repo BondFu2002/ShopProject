@@ -4,7 +4,7 @@ import { useFormik } from 'formik'; // 导入 Formik 钩子用于表单处理
 import * as Yup from 'yup'; // 导入 Yup 用于表单验证规则
 import axios from 'axios'; // 导入 axios 用于 HTTP 请求
 import { useNavigate } from 'react-router-dom'; // 导入 useNavigate 钩子用于路由导航
-import '../css/Login.css'; // 引入自定义的登录页面样式
+import '../../css/Login/Login.css'; // 引入自定义的登录页面样式
 
 const { Title } = Typography; // 解构出 Typography 中的 Title 组件
 
@@ -16,7 +16,7 @@ const LoginSchema = Yup.object().shape({
 
 // 定义登录组件
 const Login = () => {
-  localStorage.clear(); // 清除 localStorage 中的数据
+  
   const navigate = useNavigate(); // 初始化 useNavigate 钩子，用于在提交表单后导航到注册页面或主页
 
   // 使用 Formik 来管理表单的状态和验证逻辑

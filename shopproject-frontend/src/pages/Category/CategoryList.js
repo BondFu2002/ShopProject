@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Form, Input, message, Popconfirm, Breadcrumb } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
-import "../css/CategoryList.css"; // 引入 CSS 文件
+import "../../css/Category/CategoryList.css"; // 导入自定义的css样式文件
+import apiClient from "../../components/apiClient";
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -17,11 +18,7 @@ const CategoryList = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`/category`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      const response = await apiClient.get(`/category`);
       setCategories(response.data);
     } catch (error) {
       console.error("Fetch categories failed:", error);
@@ -50,19 +47,11 @@ const CategoryList = () => {
       const values = await form.validateFields();
       if (isEdit) {
         // 更新分类
-        await axios.patch(`/category/${editingCategory.id}`, values, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
-        });
+        await apiClient.patch(`/category/${editingCategory.id}`, values);
         message.success("分类信息更新成功");
       } else {
         // 创建分类
-        await axios.post(`/category`, values, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
-        });
+        await apiClient.post(`/category`, values);
         message.success("分类信息提交成功");
       }
       setIsModalVisible(false);
@@ -79,11 +68,7 @@ const CategoryList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/category/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      await apiClient.delete(`/category/${id}`);
       message.success("分类删除成功");
       fetchCategories();
     } catch (error) {

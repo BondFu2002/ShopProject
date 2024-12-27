@@ -1,15 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import CategoryList from "../pages/CategoryList";
-import ProductList from "../pages/ProductList";
-import ProductDetail from "../pages/ProductDetail";
-import ProductForm from "../pages/ProductForm";
-import Layout from "../pages/Layout";
-import Home from "../pages/Home";
-import UnpublishedProducts from "../pages/ProductDrafts"
-import UserList from "../pages/UserList"
+import Login from "../pages/Login/Login";
+import Register from "../pages/Login/Register";
+import CategoryList from "../pages/Category/CategoryList";
+import ProductList from "../pages/Product/ProductList";
+import ProductDetail from "../pages/Product/ProductDetail";
+import ProductForm from "../pages/Product/ProductForm";
+import Layout from "../pages/Layout/Layout";
+import Home from "../pages/Other/Home";
+import UnpublishedProducts from "../pages/Product/ProductDrafts"
+import UserList from "../pages/User/UserList"
 import AuthRoute from "../components/AuthRoute";
+import ChangeAdminPassword from "../pages/Other/ChangeAdminPassword"
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
         path: "/product-drafts",
         element: <UnpublishedProducts />,
       },
+      {
+        path: "/admin-password-reset",
+        element: <ChangeAdminPassword />,
+      }
     ],
   },
 ]);

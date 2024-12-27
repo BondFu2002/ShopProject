@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table, Breadcrumb, Input, Select ,message, Button } from "antd";
+import { Table, Breadcrumb, Input, Select, message, Button } from "antd";
 import { Link } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import axios from "axios";
-import "../css/Home.css"; // 引入 CSS 文件
+
+import "../../css/Other/Home.css"; // 引入 CSS 文件
+import apiClient from "../../components/apiClient";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -20,11 +21,7 @@ const Home = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`/category`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      const response = await apiClient.get(`/category`);
       setCategories(response.data);
     } catch (error) {
       console.error("Fetch categories failed:", error);
@@ -39,11 +36,7 @@ const Home = () => {
 
   const fetchProducts = async (category = "", keyword = "") => {
     try {
-      const response = await axios.get("/product", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      const response = await apiClient.get("/product");
 
       let filteredProducts = response.data;
 
@@ -52,7 +45,7 @@ const Home = () => {
       }
 
       if (keyword) {
-        filteredProducts = filteredProducts.filter((item) => 
+        filteredProducts = filteredProducts.filter((item) =>
           item.name.toLowerCase().includes(keyword.toLowerCase()) ||
           item.description.toLowerCase().includes(keyword.toLowerCase())
         );
@@ -81,6 +74,8 @@ const Home = () => {
       dataIndex: "price",
       key: "price",
       render: (price) => `¥${price.toFixed(2)}`,
+      sorter: (a, b) => a.price - b.price, // 添加价格排序
+      sortDirections: ['ascend', 'descend'], // 支持升序和降序
     },
     {
       title: "库存",
@@ -121,7 +116,8 @@ const Home = () => {
           value={selectedCategory}
           onChange={handleCategoryChange}
           allowClear
-        ><Option value="">全部</Option>
+        >
+          <Option value="">全部</Option>
           {categories.map((category) => (
             <Option key={category.id} value={category.name}>
               {category.name}

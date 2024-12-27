@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Descriptions, Button, message } from "antd";
+import { Descriptions, Button, message  } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 
-import "../css/ProductDetail.css"; // 引入 CSS 文件
+import apiClient from "../../components/apiClient";
+
+import "../../css/Product/ProductDetail.css"; // 引入 CSS 文件
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -12,11 +14,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`/product/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
-        }); // 注意这里没有前缀 /api
+        const response = await apiClient.get(`/product/${id}`); // 注意这里没有前缀 /api
         setProduct(response.data);
       } catch (error) {
         console.error(error);
@@ -28,7 +26,7 @@ const ProductDetail = () => {
   }, [id]);
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <div><LoadingOutlined />Loading...</div>;
   }
 
   return (

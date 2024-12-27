@@ -1,4 +1,3 @@
-
 .product-list-container {
   padding: 24px;
   background: #fff;
@@ -24,7 +23,17 @@
 
 .edit-button,
 .delete-button {
-  margin-right: 8px;
+  margin-right: 0px;
+  width: 20%;
+}
+
+.unpublish-button {
+  margin-left: 9%;
+  width: 50px;
+}
+.publish-button {
+  margin-left: 9%;
+  width: 50px;
 }
 
 .ant-table-wrapper {

@@ -3,8 +3,10 @@ import { Form, Input, Button, Checkbox, Space, Typography ,message} from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom'; // 导入 useNavigate 钩子，用于页面导航
-import '../css/Register.css'; // 引入自定义样式文件
+import '../../css/Login/Register.css'; // 引入自定义样式文件
+
 
 const { Title } = Typography;
 

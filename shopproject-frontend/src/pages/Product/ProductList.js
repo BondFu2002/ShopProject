@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Breadcrumb, Popconfirm, message, Select, Input } from "antd";
+import {
+  Table,
+  Button,
+  Breadcrumb,
+  Popconfirm,
+  message,
+  Select,
+  Input,
+} from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
   QuestionCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import "../css/ProductList.css"; // 引入 CSS 文件
 
+import { Link } from "react-router-dom";
+import "../../css/Product/ProductList.css"; // 引入 CSS 文件
+import apiClient from "../../components/apiClient";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const { Option } = Select;
   const [categories, setCategories] = useState([]);
+  const { Option } = Select;
   const { Search } = Input;
 
   const onSearch = (value) => {
@@ -26,11 +34,7 @@ const ProductList = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`/category`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      const response = await apiClient.get(`/category`);
       setCategories(response.data);
     } catch (error) {
       console.error("Fetch categories failed:", error);
@@ -45,24 +49,25 @@ const ProductList = () => {
 
   const fetchProducts = async (category = "", keyword = "") => {
     try {
-      const response = await axios.get("/product", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
-
+      const response = await apiClient.get("/product");
       let filteredProducts = response.data;
 
       if (category) {
-        filteredProducts = filteredProducts.filter((item) => item.category.name === category);
+        filteredProducts = filteredProducts.filter(
+          (item) => item.category.name === category
+        );
       }
 
       if (keyword) {
-        filteredProducts = filteredProducts.filter((item) => 
-          item.name.toLowerCase().includes(keyword.toLowerCase()) ||
-          item.description.toLowerCase().includes(keyword.toLowerCase())
+        filteredProducts = filteredProducts.filter(
+          (item) =>
+            item.name.toLowerCase().includes(keyword.toLowerCase()) ||
+            item.description.toLowerCase().includes(keyword.toLowerCase())
         );
       }
+
+      // 默认按ID升序排序
+      filteredProducts.sort((a, b) => a.id - b.id);
 
       setProducts(filteredProducts);
     } catch (error) {
@@ -78,17 +83,9 @@ const ProductList = () => {
 
   const handlePublish = async (productId) => {
     try {
-      const response = await axios.patch(
-        `/product/${productId}`,
-        {
-          published: false,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
-        }
-      );
+      const response = await apiClient.patch(`/product/${productId}`, {
+        published: false,
+      });
 
       if (response.status === 200) {
         message.success("商品下架成功");
@@ -104,12 +101,7 @@ const ProductList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/product/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
-
+      await apiClient.delete(`/product/${id}`);
       message.success("商品删除成功");
       fetchProducts(selectedCategory, searchKeyword);
     } catch (error) {
@@ -123,6 +115,8 @@ const ProductList = () => {
       title: "ID",
       dataIndex: "id",
       key: "id",
+      sorter: (a, b) => a.id - b.id,
+      defaultSortOrder: 'ascend', // 默认排序
     },
     {
       title: "名称",
@@ -134,6 +128,7 @@ const ProductList = () => {
       dataIndex: "price",
       key: "price",
       render: (price) => `¥${price.toFixed(2)}`,
+      sorter: (a, b) => a.price - b.price,
     },
     {
       title: "库存(个)",
@@ -145,12 +140,14 @@ const ProductList = () => {
       dataIndex: "createdAt",
       key: "createdAt",
       render: (text) => new Date(text).toLocaleString(),
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
     },
     {
       title: "更新时间",
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (text) => new Date(text).toLocaleString(),
+      sorter: (a, b) => new Date(a.updatedAt) - new Date(b.updatedAt),
     },
     {
       title: "操作",
@@ -185,13 +182,34 @@ const ProductList = () => {
               删除
             </Button>
           </Popconfirm>
-          <Button type="primary" onClick={() => handlePublish(record.id)} danger>
+          <Button
+            type="primary"
+            onClick={() => handlePublish(record.id)}
+            danger
+            className="unpublish-button"
+          >
             下架
           </Button>
         </span>
       ),
     },
   ];
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    // 根据操作维护产品列表
+    const { field, order } = sorter;
+    if (field) {
+      const sortedProducts = [...products].sort((a, b) => {
+        if (order === 'ascend') {
+          return a[field] > b[field] ? 1 : -1;
+        } else if (order === 'descend') {
+          return a[field] < b[field] ? 1 : -1;
+        }
+        return 0;
+      });
+      setProducts(sortedProducts);
+    }
+  };
 
   return (
     <div className="product-list-container">
@@ -240,6 +258,7 @@ const ProductList = () => {
           defaultPageSize: 5,
           pageSizeOptions: ["5", "10"],
         }}
+        onChange={handleTableChange} // 注册表格变化的处理函数
       />
     </div>
   );

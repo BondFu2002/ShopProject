@@ -1,0 +1,36 @@
+.user-product-form-container {
+    
+    width: 60%;
+    margin: 0 auto;   /* 居中对齐 */
+    padding: 20px;    /* 内边距 */
+    background-color: #f9f9f9; /* 背景颜色 */
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+}
+
+.page-title {
+    text-align: center;    /* 文字居中 */
+    font-size: 24px;       /* 标题字体大小 */
+    margin-bottom: 20px;   /* 标题下边距 */
+    color: #333;           /* 字体颜色 */
+}
+
+.form-item-label {
+    font-weight: bold;      /* 标签加粗 */
+    color: #555;            /* 标签颜色 */
+}
+
+.ant-form-item {
+              
+    margin-bottom: 24px;    /* 表单项目下边距 */
+}
+
+.submit-button {
+    width: 100%;            /* 按钮宽度 100% */
+    margin-top: 20px;       /* 按钮上边距 */
+}
+
+.link-button {
+    margin-top: 16px;       /* 链接按钮上边距 */
+    margin-left: 8px;       /* 链接按钮左边距 */
+}

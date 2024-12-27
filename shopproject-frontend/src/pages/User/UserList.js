@@ -11,8 +11,9 @@ import {
   Select,
 } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import axios from "axios";
-import "../css/UserList.css"; // 引入 CSS 文件
+
+import apiClient from "../../components/apiClient";
+import "../../css/User/UserList.css"; // 引入 CSS 文件
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -22,19 +23,13 @@ const UserList = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [form] = Form.useForm();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const { Option } = Select;
 
   useEffect(() => {
     const verifyUser = async () => {
       try {
-        const response = await axios.get(
-          `/users/${localStorage.getItem("userId")}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-            },
-          }
+        const response = await apiClient.get(
+          `/users/${localStorage.getItem("userId")}`
         );
         const user = response.data;
         setIsAdmin(user.role === "ADMIN");
@@ -46,8 +41,6 @@ const UserList = () => {
       } catch (error) {
         console.error("Verify user failed:", error);
         message.error("用户验证失败，请重试。");
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -56,11 +49,7 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`/users`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      const response = await apiClient.get(`/users`);
       setUsers(response.data);
     } catch (error) {
       console.error("Fetch users failed:", error);
@@ -81,11 +70,7 @@ const UserList = () => {
   const handlePasswordSubmit = async () => {
     try {
       const values = await form.validateFields();
-      const response = await axios.get(`/adminpassword/1`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      const response = await apiClient.get(`/adminpassword/1`);
       const adminPassword = response.data.password;
       console.log(adminPassword);
       if (values.password === adminPassword) {
@@ -107,11 +92,7 @@ const UserList = () => {
     try {
       const values = await form.validateFields();
       console.log(values);
-      await axios.patch(`/users/${editingUser.id}`, values, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      await apiClient.patch(`/users/${editingUser.id}`, values);
       message.success("用户信息更新成功");
       setIsEditModalVisible(false);
       fetchUsers();
@@ -128,11 +109,7 @@ const UserList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-        },
-      });
+      await apiClient.delete(`/users/${id}`);
       message.success("用户删除成功");
       fetchUsers();
     } catch (error) {
@@ -181,7 +158,7 @@ const UserList = () => {
                 type="link"
                 icon={<EditOutlined />}
                 onClick={() => showEditModal(record)}
-                className="edit-button"
+                className="user-edit-button"
               >
                 编辑
               </Button>
@@ -194,7 +171,7 @@ const UserList = () => {
                 <Button
                   type="link"
                   icon={<DeleteOutlined />}
-                  className="delete-button"
+                  className="user-delete-button"
                 >
                   删除
                 </Button>
@@ -205,10 +182,6 @@ const UserList = () => {
       ),
     },
   ];
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="user-list-container">
