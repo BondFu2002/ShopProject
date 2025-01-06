@@ -57,14 +57,17 @@ const UserList = () => {
     }
   };
 
-  const showEditModal = (record) => {
+  const showEditModal = (record = null) => {
     setIsEditModalVisible(true);
-    setIsEdit(true);
+    setIsEdit(!!record); // 如果有记录则是编辑
     setEditingUser(record);
-    form.setFieldsValue({
-      username: record.username,
-      email: record.email,
-    });
+    form.resetFields(); // 确保表单被重置以便输入新信息
+    if (record) {
+      form.setFieldsValue({
+        username: record.username,
+        email: record.email,
+      });
+    }
   };
 
   const handlePasswordSubmit = async () => {
@@ -91,9 +94,15 @@ const UserList = () => {
   const handleEditOk = async () => {
     try {
       const values = await form.validateFields();
-      console.log(values);
-      await apiClient.patch(`/users/${editingUser.id}`, values);
-      message.success("用户信息更新成功");
+
+      if (isEdit) {
+        await apiClient.patch(`/users/${editingUser.id}`, values);
+        message.success("用户信息更新成功");
+      } else {
+        await apiClient.post(`/users`, values);
+        message.success("用户创建成功");
+      }
+
       setIsEditModalVisible(false);
       fetchUsers();
     } catch (error) {
@@ -194,7 +203,7 @@ const UserList = () => {
         <Button
           type="primary"
           icon={<PlusOutlined />}
-          onClick={showEditModal}
+          onClick={() => showEditModal()} // 不传任何参数则表示创建用户
           className="create-button"
         >
           创建用户
@@ -251,7 +260,7 @@ const UserList = () => {
             <Input />
           </Form.Item>
 
-          {editingUser && editingUser.role !== "ADMIN" && (
+          {(editingUser && editingUser.role !== "ADMIN") || !isEdit ? (
             <Form.Item
               label="身份"
               name="role"
@@ -262,7 +271,7 @@ const UserList = () => {
                 <Option value="NORMAL">普通管理员</Option>
               </Select>
             </Form.Item>
-          )}
+          ) : null}
 
           <Form.Item
             label="密码(不做更改请留空)"

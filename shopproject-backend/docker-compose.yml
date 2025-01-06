@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    image: shopproject-backend
+    ports:
+      - "5000:5000"  # 确保这里的端口是你的 NestJS 应用所使用的端口
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:20030819ljl@db:5432/ShopDatabasee?schema=public # 使用完整的数据库连接字符串来适配 Prisma
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 20030819ljl
+      POSTGRES_DB: ShopDatabasee
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  pg-data:
