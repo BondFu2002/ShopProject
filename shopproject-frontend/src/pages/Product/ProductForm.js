@@ -48,7 +48,7 @@ const ProductForm = () => {
           });
         } catch (error) {
           message.error("请求商品数据失败");
-          console.error("Error:", error);
+          //console.error("Error:", error);
         }
       };
       fetchProductData(id);
@@ -57,7 +57,7 @@ const ProductForm = () => {
 
   const onFinish = async (values) => {
     try {
-      console.log("Submitting values:", values); // 打印请求体
+      //console.log("Submitting values:", values); // 打印请求体
 
       let response;
       if (isEdit) {
@@ -74,12 +74,12 @@ const ProductForm = () => {
           MId: parseInt(localStorage.getItem("userId"), 10),
           CId: parseInt(localStorage.getItem("userId"), 10),
         };
-        console.log(localStorage.getItem("userId"));
-        console.log(newValues);
+        //console.log(localStorage.getItem("userId"));
+        //console.log(newValues);
         response = await apiClient.post(`/product`, newValues);
       }
 
-      console.log("Response:", response); // 打印响应
+      //console.log("Response:", response); // 打印响应
 
       if (response.status === 200 || response.status === 201) {
         message.success("商品信息提交成功");
@@ -89,7 +89,7 @@ const ProductForm = () => {
       }
     } catch (error) {
       message.error("提交商品信息失败");
-      console.error("Error:", error); // 打印错误信息以便调试
+      //console.error("Error:", error); // 打印错误信息以便调试
     }
   };
 

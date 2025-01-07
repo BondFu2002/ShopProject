@@ -75,12 +75,13 @@ const UserList = () => {
       const values = await form.validateFields();
       const response = await apiClient.get(`/adminpassword/1`);
       const adminPassword = response.data.password;
-      console.log(adminPassword);
+      //console.log(adminPassword);
       if (values.password === adminPassword) {
         setIsPasswordModalVisible(false);
         fetchUsers();
       } else {
         message.error("密码错误，请重试。");
+        //console.log(adminPassword);
       }
     } catch (error) {
       console.error("Form validation failed:", error);

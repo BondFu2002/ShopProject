@@ -9,7 +9,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { CategoryModule } from 'src/category/category.module';
 import { ProductModule } from 'src/product/product.module';
 
-export const jwtSecret = '20021203FqxBOnDfu';
+export const jwtSecret = process.env.JWT_SECRET;
 
 @Module({
   imports: [

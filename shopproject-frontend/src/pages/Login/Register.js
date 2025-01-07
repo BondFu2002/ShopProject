@@ -30,7 +30,11 @@ const Register = () => {
     validationSchema: RegisterSchema, // 设置表单验证规则
     onSubmit: async (values) => { // 定义表单提交时的处理逻辑
       try {
-        const response = await axios.post('/users', values); // 发送 POST 请求到 /users 接口进行注册
+        const newValues = {
+          ...values,
+          role: 'USER', // 设置默认角色为普通用户
+         }
+        const response = await axios.post('/users', newValues); // 发送 POST 请求到 /users 接口进行注册
         console.log(response.data); // 打印后端返回的数据
         message.success('注册成功, 欢迎加入我们的平台！'); // 显示注册成功的通知
         navigate('/login'); // 注册成功后跳转到登录页面
@@ -44,7 +48,7 @@ const Register = () => {
   return (
     <div className="register-container">
       <Space direction="vertical" align="center" size="large" style={{ width: '100%' }}>
-        <Title level={3}>注册</Title> {/* 显示注册标题 */}
+        <Title level={3}>注册</Title> 
         <Form
           name="register"
           layout="vertical"
@@ -92,12 +96,12 @@ const Register = () => {
             />
           </Form.Item>
           <Form.Item>
-            <Checkbox>记住我</Checkbox> {/* 添加记住我选项 */}
+            <Checkbox>记住我</Checkbox> 
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
               注册
-            </Button> {/* 提交注册表单的按钮 */}
+            </Button> 
           </Form.Item>
           <Form.Item>
             <Button type="link" onClick={() => navigate('/login')}>已有账户？前往登录</Button>

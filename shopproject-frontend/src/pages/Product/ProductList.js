@@ -119,6 +119,24 @@ const ProductList = () => {
     }
   };
 
+   // 表格变化的处理函数
+   const handleTableChange = (pagination, filters, sorter) => {
+    // 根据操作维护产品列表
+    const { field, order } = sorter; // 从排序器中解构出字段和订单
+    if (field) {
+      const sortedProducts = [...products].sort((a, b) => {
+        if (order === 'ascend') {
+          return a[field] > b[field] ? 1 : -1; // 升序排序
+        } else if (order === 'descend') {
+          return a[field] < b[field] ? 1 : -1; // 降序排序
+        }
+        return 0; // 未排序时返回0
+      });
+      setProducts(sortedProducts); // 更新状态以存储排序后的商品列表
+    }
+  };
+
+
   // 表格列的配置
   const columns = [
     {
@@ -164,7 +182,7 @@ const ProductList = () => {
       key: "action", // 唯一键
       render: (text, record) => ( // 渲染操作列
         <span>
-          <Link to={`/product-detail/${record.id}`}> {/* 商品详情链接 */}
+          <Link to={`/product-detail/${record.id}`}> 
             <Button
               type="link"
               icon={<QuestionCircleOutlined />}
@@ -173,7 +191,7 @@ const ProductList = () => {
               详情
             </Button>
           </Link>
-          <Link to={`/product-form/edit/${record.id}`}> {/* 编辑商品链接 */}
+          <Link to={`/product-form/edit/${record.id}`}> 
             <Button type="link" icon={<EditOutlined />} className="edit-button">
               编辑
             </Button>
@@ -205,23 +223,7 @@ const ProductList = () => {
     },
   ];
 
-  // 表格变化的处理函数
-  const handleTableChange = (pagination, filters, sorter) => {
-    // 根据操作维护产品列表
-    const { field, order } = sorter; // 从排序器中解构出字段和订单
-    if (field) {
-      const sortedProducts = [...products].sort((a, b) => {
-        if (order === 'ascend') {
-          return a[field] > b[field] ? 1 : -1; // 升序排序
-        } else if (order === 'descend') {
-          return a[field] < b[field] ? 1 : -1; // 降序排序
-        }
-        return 0; // 未排序时返回0
-      });
-      setProducts(sortedProducts); // 更新状态以存储排序后的商品列表
-    }
-  };
-
+ 
   return (
     <div className="product-list-container"> {/* 商品列表容器 */}
       <Breadcrumb className="breadcrumb"> {/* 面包屑导航 */}

@@ -5,10 +5,11 @@ services:
     build: .
     image: shopproject-backend
     ports:
-      - "5000:5000"  # 确保这里的端口是你的 NestJS 应用所使用的端口
+      - "5000:5000" # 确保这里的端口是你的 NestJS 应用所使用的端口
     environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:20030819ljl@db:5432/ShopDatabasee?schema=public # 使用完整的数据库连接字符串来适配 Prisma
+       NODE_ENV: production
+       JWT_SECRET: 20021203FqxBOnDfu
+       DATABASE_URL: postgresql://postgres:20030819ljl@db:5432/ShopDatabasee?schema=public # 使用完整的数据库连接字符串来适配 Prisma
     depends_on:
       - db
 

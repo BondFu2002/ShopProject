@@ -26,7 +26,7 @@ apiClient.interceptors.response.use(
       if (status === 401 || status === 403) {
         // Token 无效或过期
         alert('您的登录状态已失效，请重新登录。');
-        localStorage.removeItem('jwtToken'); // 清除失效的 token
+        localStorage.clear(); // 清除失效的 token
         window.location.href = '/login'; // 重定向到登录页
       }
     }

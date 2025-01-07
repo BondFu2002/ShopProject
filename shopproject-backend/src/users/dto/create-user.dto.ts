@@ -19,7 +19,6 @@ export class CreateUserDto {
   password: string;
 
   @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   role: string;
 }
