@@ -86,9 +86,6 @@ const Login = () => {
             />
           </Form.Item>
           <Form.Item> 
-            <Checkbox>记住我</Checkbox> 
-          </Form.Item>
-          <Form.Item> 
             <Button type="primary" htmlType="submit" block> 
               登录
             </Button>

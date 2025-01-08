@@ -275,7 +275,7 @@ const UserList = () => {
           ) : null}
 
           <Form.Item
-            label="密码(不做更改请留空)"
+            label={isEdit ? "密码（不做修改请留空）" : "密码"}
             name="password"
             rules={[{ required: false, message: "请输入密码" }]}
           >

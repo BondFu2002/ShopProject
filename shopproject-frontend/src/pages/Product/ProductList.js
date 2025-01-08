@@ -225,19 +225,19 @@ const ProductList = () => {
 
  
   return (
-    <div className="product-list-container"> {/* 商品列表容器 */}
-      <Breadcrumb className="breadcrumb"> {/* 面包屑导航 */}
+    <div className="product-list-container"> 
+      <Breadcrumb className="breadcrumb"> 
         <Breadcrumb.Item>首页</Breadcrumb.Item>
         <Breadcrumb.Item>商品管理</Breadcrumb.Item>
       </Breadcrumb>
-      <h1 className="page-title">商品列表</h1> {/* 页面标题 */}
+      <h1 className="page-title">商品列表</h1> 
       <Search
         className="search-input" // 搜索框样式
         placeholder="输入搜索文本" // 搜索框占位符
         onSearch={onSearch} // 搜索事件处理
         enterButton // 显示搜索按钮
       />
-      <Link to="/product-form/create"> {/* 创建商品链接 */}
+      <Link to="/product-form/create"> 
         <Button
           type="primary"
           className="create-button"
@@ -246,7 +246,7 @@ const ProductList = () => {
           创建商品
         </Button>
       </Link>
-      <div className="category-select"> {/* 分类选择区域 */}
+      <div className="category-select"> 
         <span>分类：</span>
         <Select
           style={{ width: 120 }} // 设置选择框宽度
@@ -254,7 +254,7 @@ const ProductList = () => {
           value={selectedCategory} // 当前选择的分类
           onChange={handleCategoryChange} // 分类选择变化事件
         >
-          <Option value="">全部</Option> {/* 全部选项 */}
+          <Option value="">全部</Option>
           {categories.map((category) => ( // 渲染每个分类选项
             <Option key={category.id} value={category.name}>
               {category.name}
